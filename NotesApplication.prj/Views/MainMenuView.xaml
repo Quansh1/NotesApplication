@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="NotesApplication.Views.MainMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:NotesApplication.Views"
+             xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="1230">
+    <Grid Background="#FAFAFA">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"
+              Background="#FF43A9E9">
+            <StackPanel>
+                <TextBlock Text="NotesApplication"
+                           Foreground="White"
+                           FontSize="25"
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold" />
+                <Rectangle Height="1"
+                           Fill="White" />
+                <StackPanel Margin="0 20 0 0"
+                            Orientation="Horizontal"
+                            Height="30">
+                    <TextBox Text="{Binding NewNoteName}"
+                             Width="270"
+                             Background="#FF43A9E9"
+                             BorderBrush="#FF43A9E9"
+                             FontSize="18"
+                             Foreground="White" />
+                    <Button Command="{Binding AddNewNoteCommand}"
+                            Background="#FF3A8EC3"
+                            Foreground="White"
+                            ToolTip="Добавить новую заметку"
+                            Content="+"
+                            Width="30"
+                            FontWeight="Bold"
+                            FontSize="18"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Margin="0 10 0 0"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Ваши заметки:"
+                               Foreground="White"
+                               FontSize="20" />
+                </StackPanel> 
+                
+                <ListBox Name="NotesList"
+                         ItemsSource="{Binding NotesNames}"
+                         Height="440"
+                         Background="#FF43A9E9"
+                         BorderThickness="0"
+                         FontSize="15"
+                         SelectedItem="{Binding SelectedObject}"
+                         Foreground="White"
+                         SelectionChanged="NotesList_SelectionChanged">
+                    <Behaviors:Interaction.Triggers>
+                        <Behaviors:EventTrigger EventName="SelectionChanged">
+                            <Behaviors:InvokeCommandAction Command="{Binding ItemChangedCommand}" />
+                        </Behaviors:EventTrigger>
+                    </Behaviors:Interaction.Triggers>
+                </ListBox>
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding DeleteNoteCommand}"
+                            Content="Удалить"
+                            Height="40"
+                            Width="150"
+                            Background="#FF3A8EC3"
+                            Foreground="White"
+                            ToolTip="Удалить выбранную заметку" />
+                    <Button Width="150"
+                            Content="Обновить"
+                            Background="#FF3A8EC3"
+                            Foreground="White"
+                            Command="{Binding RefreshNotesList}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Rectangle Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   Height="600"
+                   Width="3"
+                   Fill="#FF3581B1" />
+        <Grid Grid.Column="2"
+              Background="#FFF3F7F9">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  Background="#FF43A9E9">
+                <StackPanel Orientation="Horizontal">
+                    
+                    <TextBlock Text="Выбранная заметка: "
+                               Foreground="White"
+                               FontSize="18"
+                               Height="28" />
+                    
+                    <TextBox Name="SelectedNoteName"
+                             Text="{Binding SelectedNote}"
+                             Width="670"
+                             Background="#FF43A9E9"
+                             BorderBrush="#FF43A9E9"
+                             FontSize="18"
+                             Foreground="White"/>
+                    
+                </StackPanel>
+            </Grid>
+            
+            <Grid Grid.Row="1">
+
+                <RichTextBox Name="RichTextBoxNoteEditor"
+                             VerticalScrollBarVisibility="Auto"/>
+            </Grid>
+            
+            <Grid Grid.Row="2"
+                  Background="#FF43A9E9">
+                <StackPanel Orientation="Horizontal">
+                    
+                    <TextBlock HorizontalAlignment="Left"
+                               Text="Инструменты для редактирования:"
+                               Foreground="White"
+                               FontSize="15" />
+                    
+                    <Button Name="btnBold"             
+                            Margin="5 0"
+                            Background="#FF3A8EC3"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="selectionTextBoldBtn_Click"
+                            Width="40"
+                            Content="B"/>
+                    
+                    <Button Click="selectionTextItalicBtn_Click"
+                            Margin="5 0"
+                            Width="40"
+                            Content="I"
+                            Background="#FF3A8EC3"
+                            Foreground="White"
+                            FontStyle="Italic" />
+                    
+                    <Button Click="selectionTextUnderLineBtn_Click"
+                            Margin="5 0"
+                            Width="40"
+                            Background="#FF3A8EC3"
+                            Foreground="White">
+                        <Button.Content>
+                            <TextBlock>
+                                <Underline>U</Underline></TextBlock>
+                        </Button.Content>
+                    </Button>
+                    <Button Margin="5 0"
+                            Width="90"
+                            Content="+Изображение"
+                            Background="#FF3A8EC3"
+                            Foreground="White"
+                            ToolTip="Добавить изображение в заметку"
+                            Click="AddImageToNoteBtn_Click" />
+                    
+                    <ComboBox Name="ListOfFontFamily"
+                              Width="113"
+                              Margin="5 0"
+                              ItemsSource="{Binding FontNames}"
+                              SelectedIndex="0"
+                              SelectionChanged="ListOfFontFamily_SelectionChanged" />
+                    <ComboBox Name="ListOfFontSize"
+                              Width="70"
+                              ItemsSource="{Binding FontSize}"
+                              SelectedIndex="4"
+                              SelectionChanged="ListOfFontSize_SelectionChanged" />
+                    
+                    <TextBlock Margin="20 0 0 0"
+                               Foreground="White"
+                               FontSize="15"
+                               Text="Подсказка">
+                        <TextBlock.ToolTip>
+                            <TextBlock>
+                                Редактировать выделенный текст можно с помощью комбинации клавиш:
+                                <LineBreak /> 
+                                Полужирный(Ctrl+B), подчеркнутый(Ctrl+U) и курсив (Ctrl+I)
+                                <LineBreak /> 
+                                Для выравнивания по левому (Ctrl+L), правому (Ctrl+R) и центру (Ctrl+E).
+                            </TextBlock>
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </StackPanel>
+                <Button Content="Сохранить"
+                        Width="100"
+                        Background="#FF3A8EC3"
+                        Foreground="White"
+                        HorizontalAlignment="Right"
+                        Margin="797,0,0,0"
+                        Click="SaveNoteBtn_Click" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
